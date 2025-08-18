@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,7 +17,7 @@ const Index = () => {
       price: 2500,
       oldPrice: 3000,
       image: "/img/09ee0dd6-bd26-4c11-8018-cdafe2b7c12b.jpg",
-      category: "Говядина"
+      category: "говядина"
     },
     {
       id: 2,
@@ -25,7 +26,7 @@ const Index = () => {
       price: 1800,
       oldPrice: 2200,
       image: "/img/39f5a6a9-d66f-4ddc-9dd9-9f6191b9c82f.jpg",
-      category: "Баранина"
+      category: "баранина"
     },
     {
       id: 3,
@@ -34,8 +35,34 @@ const Index = () => {
       price: 1200,
       oldPrice: 1400,
       image: "/img/e518ae2f-d156-45ca-8c99-3b0cc17d11b6.jpg",
-      category: "Колбасы"
+      category: "колбасы"
+    },
+    {
+      id: 4,
+      name: "Свиная вырезка",
+      description: "Нежная свинина высшего сорта",
+      price: 1500,
+      oldPrice: 1800,
+      image: "/img/fe083e35-117b-45f0-a257-972c6d1873ec.jpg",
+      category: "свинина"
+    },
+    {
+      id: 5,
+      name: "Куриная грудка",
+      description: "Диетическое мясо без кости",
+      price: 800,
+      oldPrice: 950,
+      image: "/img/7e26611b-2cdb-4ce8-9aff-03877ba171dc.jpg",
+      category: "курица"
     }
+  ];
+
+  const popularProducts = [
+    "🥩 Мраморная говядина - ХИТ ПРОДАЖ!", 
+    "🔥 Свиная вырезка со скидкой 20%", 
+    "✨ Колбасы ассорти - новинка сезона", 
+    "🍖 Ребра ягненка - только сегодня -400₽",
+    "🐔 Куриная грудка - идеально для диеты"
   ];
 
   const addToCart = (product: any) => {
@@ -62,12 +89,13 @@ const Index = () => {
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center justify-between">
             <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-bold">МЕСТО ДРАРИ</h1>
+              <Link to="/" className="text-2xl font-bold hover:text-orange-200">МЕСТО ДРАРИ</Link>
               <div className="hidden md:flex space-x-6">
                 <a href="#catalog" className="hover:text-orange-200 transition-colors">Каталог</a>
+                <Link to="/category/говядина" className="hover:text-orange-200 transition-colors">Говядина</Link>
+                <Link to="/category/свинина" className="hover:text-orange-200 transition-colors">Свинина</Link>
+                <Link to="/category/курица" className="hover:text-orange-200 transition-colors">Курица</Link>
                 <a href="#delivery" className="hover:text-orange-200 transition-colors">Доставка</a>
-                <a href="#about" className="hover:text-orange-200 transition-colors">О нас</a>
-                <a href="#contacts" className="hover:text-orange-200 transition-colors">Контакты</a>
               </div>
             </div>
             
@@ -88,6 +116,15 @@ const Index = () => {
           </nav>
         </div>
       </header>
+
+      {/* Marquee with Popular Products */}
+      <div className="bg-yellow-400 text-black py-2 overflow-hidden">
+        <div className="marquee whitespace-nowrap">
+          <span className="inline-block px-8 font-medium">
+            {popularProducts.join(' • ')}
+          </span>
+        </div>
+      </div>
 
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary to-secondary text-white py-20">
@@ -133,20 +170,24 @@ const Index = () => {
       <section id="catalog" className="py-20">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">Каталог продукции</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="aspect-square bg-gradient-to-br from-primary/10 to-secondary/10">
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+          <div className="grid md:grid-cols-3 lg:grid-cols-3 gap-8">
+            {products.slice(0, 6).map((product) => (
+              <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
+                <Link to={`/product/${product.id}`}>
+                  <div className="aspect-square bg-gradient-to-br from-primary/10 to-secondary/10 overflow-hidden">
+                    <img 
+                      src={product.image} 
+                      alt={product.name}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                </Link>
                 <CardHeader>
                   <CardTitle className="flex justify-between items-start">
-                    <span>{product.name}</span>
-                    <Badge variant="secondary">{product.category}</Badge>
+                    <Link to={`/product/${product.id}`} className="hover:text-primary transition-colors">
+                      {product.name}
+                    </Link>
+                    <Badge variant="secondary" className="capitalize">{product.category}</Badge>
                   </CardTitle>
                   <p className="text-gray-600">{product.description}</p>
                 </CardHeader>
@@ -157,15 +198,78 @@ const Index = () => {
                       <span className="text-sm text-gray-400 line-through">₽{product.oldPrice}</span>
                     </div>
                   </div>
-                  <Button 
-                    className="w-full bg-primary hover:bg-primary/90"
-                    onClick={() => addToCart(product)}
-                  >
-                    ADD TO CART
-                  </Button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button 
+                      variant="outline"
+                      size="sm"
+                      onClick={() => addToCart(product)}
+                    >
+                      В корзину
+                    </Button>
+                    <Button 
+                      size="sm"
+                      asChild
+                    >
+                      <Link to={`/product/${product.id}`}>Подробнее</Link>
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
+          </div>
+          
+          {/* Categories Grid */}
+          <div className="mt-16">
+            <h3 className="text-3xl font-bold text-center mb-8">Категории товаров</h3>
+            <div className="grid md:grid-cols-4 gap-6">
+              <Link to="/category/говядина" className="group">
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+                  <div className="aspect-square bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center">
+                    <span className="text-6xl">🥩</span>
+                  </div>
+                  <CardContent className="p-4 text-center">
+                    <h4 className="font-semibold text-lg group-hover:text-primary transition-colors">Говядина</h4>
+                    <p className="text-sm text-gray-600">Премиальное мясо</p>
+                  </CardContent>
+                </Card>
+              </Link>
+              
+              <Link to="/category/свинина" className="group">
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+                  <div className="aspect-square bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
+                    <span className="text-6xl">🐷</span>
+                  </div>
+                  <CardContent className="p-4 text-center">
+                    <h4 className="font-semibold text-lg group-hover:text-primary transition-colors">Свинина</h4>
+                    <p className="text-sm text-gray-600">Сочное мясо</p>
+                  </CardContent>
+                </Card>
+              </Link>
+              
+              <Link to="/category/курица" className="group">
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+                  <div className="aspect-square bg-gradient-to-br from-yellow-100 to-yellow-200 flex items-center justify-center">
+                    <span className="text-6xl">🐔</span>
+                  </div>
+                  <CardContent className="p-4 text-center">
+                    <h4 className="font-semibold text-lg group-hover:text-primary transition-colors">Курица</h4>
+                    <p className="text-sm text-gray-600">Диетическое мясо</p>
+                  </CardContent>
+                </Card>
+              </Link>
+              
+              <Link to="/category/колбасы" className="group">
+                <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+                  <div className="aspect-square bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+                    <span className="text-6xl">🌭</span>
+                  </div>
+                  <CardContent className="p-4 text-center">
+                    <h4 className="font-semibold text-lg group-hover:text-primary transition-colors">Колбасы</h4>
+                    <p className="text-sm text-gray-600">Деликатесы</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

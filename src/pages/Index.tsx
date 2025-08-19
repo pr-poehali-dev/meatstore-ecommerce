@@ -170,8 +170,15 @@ const Index = () => {
       <section className="py-8 bg-white border-t border-b border-gray-200">
         <div className="container mx-auto px-4">
           <h3 className="text-2xl font-bold text-center mb-6">Популярные товары</h3>
-          <div className="overflow-hidden">
-            <div className="marquee-cards flex space-x-6">
+          <div className="marquee-container overflow-hidden relative">
+            <div className="marquee-cards flex space-x-6" 
+                 onWheel={(e) => {
+                   e.preventDefault();
+                   const container = e.currentTarget.parentElement;
+                   if (container) {
+                     container.scrollLeft += e.deltaY;
+                   }
+                 }}>
               {products.concat(products).map((product, index) => (
                 <div key={`${product.id}-${index}`} className="flex-shrink-0 w-64">
                   <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">

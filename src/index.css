@@ -110,11 +110,21 @@
   }
 
   .marquee-cards {
-    animation: marquee-cards 40s linear infinite;
+    animation: marquee-cards 20s linear infinite;
   }
 
   .marquee-cards:hover {
     animation-play-state: paused;
+  }
+
+  .marquee-container {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .marquee-container::-webkit-scrollbar {
+    display: none;
   }
 
   @keyframes marquee {

@@ -109,12 +109,29 @@
     animation-play-state: paused;
   }
 
+  .marquee-cards {
+    animation: marquee-cards 40s linear infinite;
+  }
+
+  .marquee-cards:hover {
+    animation-play-state: paused;
+  }
+
   @keyframes marquee {
     0% {
       transform: translateX(100%);
     }
     100% {
       transform: translateX(-100%);
+    }
+  }
+
+  @keyframes marquee-cards {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
     }
   }
 }

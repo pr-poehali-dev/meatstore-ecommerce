@@ -166,6 +166,52 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Featured Products Marquee */}
+      <section className="py-8 bg-white border-t border-b border-gray-200">
+        <div className="container mx-auto px-4">
+          <h3 className="text-2xl font-bold text-center mb-6">Популярные товары</h3>
+          <div className="overflow-hidden">
+            <div className="marquee-cards flex space-x-6">
+              {products.concat(products).map((product, index) => (
+                <div key={`${product.id}-${index}`} className="flex-shrink-0 w-64">
+                  <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <Link to={`/product/${product.id}`}>
+                      <div className="aspect-[4/3] bg-gradient-to-br from-primary/10 to-secondary/10 overflow-hidden">
+                        <img 
+                          src={product.image} 
+                          alt={product.name}
+                          className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                        />
+                      </div>
+                    </Link>
+                    <CardContent className="p-4">
+                      <div className="mb-2">
+                        <Badge variant="secondary" className="capitalize text-xs">{product.category}</Badge>
+                      </div>
+                      <h4 className="font-semibold text-sm mb-2 line-clamp-2">{product.name}</h4>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-1">
+                          <span className="text-lg font-bold text-primary">₽{product.price}</span>
+                          <span className="text-xs text-gray-400 line-through">₽{product.oldPrice}</span>
+                        </div>
+                        <Button 
+                          size="sm"
+                          variant="outline"
+                          onClick={() => addToCart(product)}
+                          className="text-xs px-2 py-1"
+                        >
+                          +
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Product Catalog */}
       <section id="catalog" className="py-20">
         <div className="container mx-auto px-4">
